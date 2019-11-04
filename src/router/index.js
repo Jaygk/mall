@@ -4,6 +4,7 @@ const Home = () => import('views/home/Home')
 const Category = () => import('views/category/Category')
 const ShopCar = () => import('views/cart/ShopCar')
 const Profile = () => import('views/profile/Profile')
+const Details = () => import('views/details/Details')
 
 Vue.use(VueRouter)
 
@@ -14,19 +15,38 @@ const routes = [
   },
   {
     path: '/home',
-    component: Home
+    component: Home,
+    meta: {
+      showGuide: true
+    }
   },
   {
     path: '/category',
-    component: Category
+    component: Category,
+    meta: {
+      showGuide: true
+    }
   },
   {
     path: '/shopCar',
-    component: ShopCar
+    component: ShopCar,
+    meta: {
+      showGuide: true
+    }
   },
   {
     path: '/profile',
-    component: Profile
+    component: Profile,
+    meta: {
+      showGuide: true
+    }
+  },
+  {
+    path: '/details/:id',
+    component: Details,
+    meta: {
+      showGuide: false
+    }
   }
 ]
 

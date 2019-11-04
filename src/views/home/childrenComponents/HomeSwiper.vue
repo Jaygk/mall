@@ -1,13 +1,11 @@
 <template>
-  <div class="swiper">
-    <Swiper>
-      <swiper-item v-for="item in bannerData" :key="item.link">
-        <a :href="item.link">
-          <img :src="item.image" alt="" @load="swiperImgLoad">
-        </a>
-      </swiper-item>
-    </Swiper>
-  </div>
+  <Swiper ref="swiper">
+    <swiper-item v-for="item in bannerData" :key="item.link">
+      <a :href="item.link">
+        <img :src="item.image" alt="" @load="swiperImgLoad">
+      </a>
+    </swiper-item>
+  </Swiper>
 </template>
 
 <script>
@@ -43,7 +41,5 @@
 </script>
 
 <style scoped>
-  .swiper {
-    /*margin-top: 44px;*/
-  }
+
 </style>

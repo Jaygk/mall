@@ -60,6 +60,10 @@
       refresh() {
         this.scroll && this.scroll.refresh()
         // console.log('---');
+      },
+
+      getSaveY() {
+        return this.scroll.y ? this.scroll.y : 0
       }
     }
   }

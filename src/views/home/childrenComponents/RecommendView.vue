@@ -1,7 +1,7 @@
 <template>
   <div class="recommend-view">
     <div v-for="item in recommendData" :key="item.link" class="recommend-item">
-      <a :href="item.link">
+      <a :href="item.link" class="main">
         <img :src="item.image" alt="">
         <span>{{item.title}}</span>
       </a>
@@ -33,10 +33,11 @@
     font-size: 14px;
     padding-bottom: 30px;
     border-bottom: 10px solid #eee;
+    justify-content: space-around;
   }
 
   .recommend-item {
-    flex: 1;
+    /*flex: 1;*/
     text-align: center;
   }
 
@@ -44,5 +45,11 @@
     width: 70px;
     height: 70px;
     margin-bottom: 10px;
+  }
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 </style>

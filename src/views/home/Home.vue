@@ -7,7 +7,7 @@
 
     <Scroll class="content" ref="scroll" @monPos="getPos" :probe-type="3" :click="true" :pullUpLoad="true" @pullUp="getMore">
       <!--轮播图-->
-      <home-swiper :bannerData="banner" @swiperImageLoad="getTabConPos"></home-swiper>
+      <home-swiper :bannerData="banner" @swiperImageLoad="getTabConPos" ref="homeSwiper"></home-swiper>
 
       <recommend-view :recommendData="recommend"></recommend-view>
 
@@ -31,11 +31,11 @@
   import TabControl from 'components/content/tabControl/TabControl'
   import GoodsList from 'components/content/goodsList/GoodsList'
   import Scroll from 'components/common/scroll/Scroll'
-  import BackTop from 'components/content/backTop/BackTop'
 
-  import {getMultiData, getHomeGoods} from "network/home";
+  import {getMultiData, getHomeGoods} from "network/home"
 
-  import {debounce} from "common/utils";
+  import {debounce} from "common/utils"
+  import {itemListenerMixin} from "common/mixin";
 
   export default {
     name: 'Home',
@@ -50,9 +50,9 @@
           'sell': {page: 0, list: []}
         },
         currentType: 'pop',
-        isShow: false,
         tabConTop: null,
-        isFixed: false
+        isFixed: false,
+        saveY: 0
       }
     },
     components: {
@@ -62,8 +62,7 @@
       FeatureView,
       TabControl,
       GoodsList,
-      Scroll,
-      BackTop
+      Scroll
     },
     created() {
       this._getMultiData()
@@ -72,6 +71,7 @@
       this._getHomeGoods('new')
       this._getHomeGoods('sell')
     },
+    mixins:[itemListenerMixin],
     methods: {
       // 根据子组件TabControl传过来的下标值,返回对应的type
       fatherClick(data) {
@@ -90,13 +90,6 @@
         // 确保两个tabControl组件的下标值一样
         this.$refs.tabControl1.currentIndex = data
         this.$refs.tabControl2.currentIndex = data
-      },
-
-      // 返回顶部函数
-      backToTop() {
-        this.$refs.scroll.scrollTo(0, 0, 1000)
-        // console.log('ok');
-
       },
 
       // 获取滚动距离
@@ -124,8 +117,8 @@
       _getMultiData() {
         getMultiData().then(res => {
           // console.log(res);
-          this.banner = res.banner.list
-          this.recommend = res.recommend.list
+          this.banner = res.data.banner.list
+          this.recommend = res.data.recommend.list
         })
       },
 
@@ -135,18 +128,23 @@
         getHomeGoods(type, page)
           .then(res => {
             // console.log(res);
-            this.goods[type].list.push(...res.list)
+            this.goods[type].list.push(...res.data.list)
             this.goods[type].page++
             this.$refs.scroll.finishPullUp()
           })
       }
     },
-    mounted() {
-      const refresh = debounce(this.$refs.scroll.refresh, 40)
-      // 通过事件总线函数监听图片加载完成后刷新BScroll
-      this.$bus.$on('itemImageLoad', () => {
-        refresh()
-      })
+    activated() {
+      // console.log('进入');
+      this.$refs.scroll.scrollTo(0, this.saveY, 0)
+      // this.$refs.homeSwiper.$refs.swiper.startTimer()
+      this.$refs.scroll.refresh()
+    },
+    deactivated() {
+      this.saveY = this.$refs.scroll.getSaveY()
+      // console.log('离开');
+      // this.$refs.homeSwiper.$refs.swiper.stopTimer()
+      this.$bus.$off('itemImgLoad', this.itemImageListener)
     }
   }
 </script>

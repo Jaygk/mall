@@ -1,7 +1,7 @@
 <template>
-  <div class="goods-item">
+  <div class="goods-item" @click="toDetails">
     <div class="top">
-      <img :src="item.show.img" alt="" @load="imageLoad">
+      <img :src="imgLink" alt="" @load="imageLoad">
     </div>
     <div class="bot">
       <p>{{item.title}}</p>
@@ -30,6 +30,15 @@
     methods: {
       imageLoad() {
         this.$bus.$emit('itemImageLoad')
+      },
+
+      toDetails() {
+        this.$router.push('/details/' + this.item.iid)
+      }
+    },
+    computed: {
+      imgLink() {
+        return this.item.image ? this.item.image : this.item.show.img
       }
     }
   }

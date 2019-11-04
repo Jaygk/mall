@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <keep-alive>
+    <keep-alive exclude="Details">
       <router-view/>
     </keep-alive>
-    <tab-bar-main></tab-bar-main>
+    <tab-bar-main v-show="$route.meta.showGuide"></tab-bar-main>
   </div>
 </template>
 
