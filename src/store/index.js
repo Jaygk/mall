@@ -7,7 +7,8 @@ import actions from './actions'
 Vue.use(Vuex)
 
 const state = {
-
+  shopCarList: [],
+  selected: false
 }
 
 export default new Vuex.Store({

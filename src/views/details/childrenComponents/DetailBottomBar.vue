@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="bar-item bar-right">
-      <div class="cart">加入购物车</div>
+      <div class="cart" @click="addToCar">加入购物车</div>
       <div class="buy">购买</div>
     </div>
   </div>
@@ -26,6 +26,11 @@
     name: 'DetailBottomBar',
     data() {
       return {}
+    },
+    methods: {
+      addToCar() {
+        this.$emit('addToShopCar')
+      }
     }
   }
 </script>

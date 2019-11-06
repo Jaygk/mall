@@ -75,6 +75,8 @@
     height: 24px;
     line-height: 24px;
     flex: 1;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   .good-info {
@@ -97,6 +99,8 @@
   .good-info table td {
     height: 24px;
     line-height: 24px;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   .good-info table .key {

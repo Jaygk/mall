@@ -18,7 +18,7 @@
       <detail-recommend :detail-recommend-list="recommendList" ref="detailRecommend"></detail-recommend>
     </Scroll>
 
-    <detail-bottom-bar></detail-bottom-bar>
+    <detail-bottom-bar @addToShopCar="addToCar"></detail-bottom-bar>
 
     <back-top @click.native="backToTop" v-show="isShow"></back-top>
   </div>
@@ -92,7 +92,7 @@
             this.detailImage = result.detailInfo.detailImage
             this.itemParams = new ItemParams(result.itemParams)
             this.rateList = result.rate.list
-            // console.log(this.rateList);
+            // console.log(this.shopInfo);
           })
       },
 
@@ -137,6 +137,21 @@
             break;
           }
         }
+      },
+
+      addToCar() {
+        // console.log('ok');
+        let shopCar = {}
+
+        shopCar.id = this.id
+        shopCar.imgUrl = this.itemInfo.topImages[0]
+        shopCar.title = this.itemInfo.title
+        shopCar.desc = this.itemInfo.desc
+        shopCar.price = this.itemInfo.lowNowPrice
+        shopCar.count = 1
+        shopCar.checked = true
+
+        this.$store.commit('addShopToCar', shopCar)
       }
     }
   }

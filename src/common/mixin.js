@@ -1,4 +1,5 @@
 import BackTop from 'components/content/backTop/BackTop'
+import {debounce} from "./utils";
 
 export const itemListenerMixin = {
   data() {
@@ -9,15 +10,6 @@ export const itemListenerMixin = {
     }
   },
   methods: {
-    debounce(func, delay=30) {
-      let timer = null
-      return function (...args) {
-        if (timer) clearTimeout(timer)
-        timer = setTimeout(() => {
-          func.apply(this, args)
-        }, delay)
-      }
-    },
     // 返回顶部函数
     backToTop() {
       this.$refs.scroll.scrollTo(0, 0, 1000)
@@ -26,7 +18,7 @@ export const itemListenerMixin = {
     }
   },
   mounted() {
-    this.newRefresh = this.debounce(this.$refs.scroll.refresh, 40)
+    this.newRefresh = debounce(this.$refs.scroll.refresh, 40)
 
     this.itemImageListener = () => {
       this.newRefresh()
