@@ -41,6 +41,8 @@
 
   import {itemListenerMixin} from "common/mixin";
 
+  import {mapActions} from 'vuex'
+
   export default {
     name: 'Details',
     data() {
@@ -139,6 +141,10 @@
         }
       },
 
+      ...mapActions({
+        addCar: 'addShopToCar'
+      }),
+
       addToCar() {
         // console.log('ok');
         let shopCar = {}
@@ -151,8 +157,14 @@
         shopCar.count = 1
         shopCar.checked = true
 
-        this.$store.commit('addShopToCar', shopCar)
+        this.addCar(shopCar).then(res => {
+          this.$toast.show(res, 2000)
+        })
       }
+    },
+    destroyed() {
+      // console.log('ll');
+      this.$toast.remove()
     }
   }
 </script>

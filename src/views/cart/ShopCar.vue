@@ -1,53 +1,51 @@
 <template>
   <div class="shop-cart">
-    <nav-bar class="shop-car-nav"><div slot="center">购物车({{$store.getters.getTotalCount}})</div></nav-bar>
+    <shop-cart-nav @isManage="changeManage"></shop-cart-nav>
 
     <scroll class="scroll-main" :click="true" ref="scroll">
       <shop-list :cartList="list"></shop-list>
     </scroll>
 
-    <cart-bottom-bar :isSelected="selected" @cartBottomClick="bottomClick"></cart-bottom-bar>
+    <cart-bottom-bar :isToManage="handle"></cart-bottom-bar>
   </div>
 </template>
 
 <script>
-  import NavBar from 'components/common/navBar/NavBar'
   import Scroll from 'components/common/scroll/Scroll'
 
   import ShopList from './childrenComponents/ShopList'
   import CartBottomBar from './childrenComponents/CartBottomBar'
-
-  import {mapGetters} from 'vuex'
+  import ShopCartNav from './childrenComponents/ShopCartNav'
 
   import {debounce} from "common/utils";
+
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'ShopCar',
     data() {
       return {
-        newRefresh: null
+        newRefresh: null,
+        handle: '管理'
       }
     },
     components: {
-      NavBar,
+      ShopCartNav,
       ShopList,
       CartBottomBar,
       Scroll
     },
     created() {
-      this.$store.commit('handleSelected')
-      // console.log('create');
-      // console.log(this.list.length);
+
     },
     computed: {
       ...mapGetters({
-        list: 'getList',
-        selected: 'getSelected'
+        list: 'getList'
       })
     },
     methods: {
-      bottomClick() {
-        this.$store.commit('changeSelected')
+      changeManage(data) {
+        this.handle = data
       }
     },
     mounted() {
@@ -63,16 +61,6 @@
 </script>
 
 <style>
-  .shop-car-nav {
-    background-color: var(--color-tint);
-    color: #fff;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 99;
-  }
-
   .shop-cart {
     height: 100vh;
   }

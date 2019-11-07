@@ -11,10 +11,6 @@ export default {
     return state.shopCarList.filter(item => item.checked).reduce((pre, cur) => pre + cur.count, 0)
   },
 
-  getSelected(state) {
-    return state.selected
-  },
-
   getList(state) {
     return state.shopCarList
   },

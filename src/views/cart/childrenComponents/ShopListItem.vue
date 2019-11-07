@@ -7,9 +7,15 @@
     <div class="right">
       <h3>{{cartItem.title}}</h3>
       <p class="content">{{cartItem.desc}}</p>
-      <div>
+      <div class="bottom">
         <span class="price">￥{{cartItem.price}}</span>
-        <span class="count">x{{cartItem.count}}</span>
+        <span class="remove" @click="removeItem">移除</span>
+        <span class="count">
+          <button @click="decrease" :disabled="cartItem.count <= 1">-</button>
+          {{cartItem.count}}
+          <!--<input type="number" name="" id="" v-model="">-->
+          <button @click="increase">+</button>
+        </span>
       </div>
     </div>
   </div>
@@ -17,6 +23,8 @@
 
 <script>
   import CheckButton from './CheckButton'
+
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'ShopListItem',
@@ -37,12 +45,27 @@
     methods: {
       buttonClick() {
         this.cartItem.checked = !this.cartItem.checked
-        this.$store.commit('handleSelected')
       },
 
       cartImageLoad() {
         this.$bus.$emit('cartImgLoad')
+      },
+      removeItem() {
+        this.$store.commit('removeShop', this.cartItem.id)
+      },
+
+      decrease() {
+        this.$store.commit('decreaseCount', this.cartItem.id)
+      },
+
+      increase() {
+        this.$store.commit('increaseCount', this.cartItem.id)
       }
+    },
+    computed: {
+      ...mapGetters({
+        list: 'getList'
+      })
     }
   }
 </script>
@@ -94,16 +117,41 @@
     font-size: 13px;
   }
 
-  .price {
+  .right .bottom {
     position: absolute;
-    left: 0;
     bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .price {
+    height: 22px;
+    line-height: 22px;
     color: #fc9661;
   }
 
   .count {
-    position: absolute;
-    right: 10px;
-    bottom: 0;
+    height: 22px;
+    line-height: 22px;
+  }
+
+  .count button {
+    padding: 0 5px;
+    font-size: 13px;
+    margin: 2px;
+  }
+
+  .remove {
+    height: 22px;
+    line-height: 22px;
+    font-size: 14px;
+    margin-left: 20px;
+    padding: 0 10px;
+    background-color: #f01;
+    color: #fff;
+    border-radius: 8px;
   }
 </style>
