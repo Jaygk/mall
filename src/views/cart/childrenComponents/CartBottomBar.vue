@@ -73,6 +73,7 @@
       },
 
       removeSelected() {
+		    if (this.list.length === 0) return
 		    this.$store.commit('removeSelectedGood')
       }
     },
